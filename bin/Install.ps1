@@ -46,34 +46,24 @@ if ([string]::IsNullOrEmpty($NodeVersionInfo)) {
 }
 
 $NpmVersion = $NodeVersionInfo.npm
-Write-Host @"
-Install versions
-  node : $Version
-  npm  : $NpmVersion
-"@
+Write-Host "Install Node.js $Version / npm $NpmVersion"
 
 if (Test-Path $Dirs.Node) {
   if ($Force) {
     Write-Host "Removing $($Dirs.Node)" -ForegroundColor Red
     Remove-Item -Force -Recurse $Dirs.Node
   } else {
-    throw "Already exists $($Dirs.Node), please uninstall first."
+    throw "$($Dirs.Node) is already installed. If you want to re-install it, please try '-Force' option."
   }
 }
 
-$NodeBinUrl = NodeBinUrl $Version $Arch
-$NodeBinPath = fget $NodeBinUrl $Dirs.Node
+$NodeZipUrl = NodeZipUrl $Version $Arch
+$NodeZipPath = fget $NodeZipUrl $Dirs.Versions
 
-$NpmZipUrl = NpmZipUrl $NpmVersion
-$NpmZipPath = fget $NpmZipUrl $Dirs.Node "npm.zip"
+Write-Host "Unzipping..."
 
-Write-Host "Install npm to $($Dirs.Npm) ..."
-New-Item $Dirs.Modules -ItemType Directory -Force | Out-Null
-$NpmUnzipPaths = Unzip $NpmZipPath $Dirs.Modules
-
-$NpmUnzipPath = Join-Path $Dirs.Modules ($NpmUnzipPaths | Select-Object -First 1).Name
-Move-Item $NpmUnzipPath $Dirs.Npm
-
-Copy-Item -Path "$($Dirs.Npm)\bin\*" -Destination $Dirs.Node -Include "npm", "npm.cmd", "npx", "npx.cmd"
+$NodeUnzipPaths = Unzip $NodeZipPath $Dirs.Versions
+$NodeUnzipPath = Join-Path $Dirs.Versions ($NodeUnzipPaths | Select-Object -First 1).Name
+Move-Item $NodeUnzipPath $Dirs.Node
 
 Write-Host "Finished install successfully."

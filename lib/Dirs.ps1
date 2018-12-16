@@ -1,13 +1,13 @@
-function InstallDir {
+function NvmpDir {
   return "$ENV:USERPROFILE\.nvmp"
 }
 
 function CurrentVersionDir {
-  return "$(InstallDir)\current"
+  return "$(NvmpDir)\current"
 }
 
 function VersionsDir {
-  return "$(InstallDir)\versions"
+  return "$(NvmpDir)\versions"
 }
 
 function ResolveDirs {
@@ -25,14 +25,10 @@ function ResolveDirs {
   $CurrentDir = CurrentVersionDir
   $VersionsDir = VersionsDir
   $NodeDir = Join-Path $VersionsDir $Version
-  $ModulesDir = Join-Path $NodeDir "node_modules"
-  $NpmDir = Join-Path $ModulesDir "npm"
 
   return @{
     Current = $CurrentDir;
     Versions = $VersionsDir;
     Node = $NodeDir;
-    Modules = $ModulesDir;
-    Npm = $NpmDir
   }
 }
