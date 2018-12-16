@@ -8,7 +8,7 @@ nvmp is a Node Version Manager implemented by Powershell
 
 # Usage
 ```
-PS C:\> nvmp
+PS C:\> nvmp help
 Node Version Manager by Powershell
 
 Usage:
@@ -29,13 +29,10 @@ Example:
 
 # Installation
 
-Add the path to nvmp directory and current version directory to your PATH environment variable.
+Clone this repository and run `install.ps1` script to add path to nvmp directory and path to junction of current node.js version to your PATH environment variable.
 
 ```powershell
-PS C:\git> git clone https://github.com/clomie/nvmp 
-PS C:\git> $Path = [environment]::getEnvironmentVariable('PATH', 'User')
-PS C:\git> $Path = "$ENV:USERPROFILE\.nvmp\current;C:\git\nvmp;$Path"
-PS C:\git> [environment]::setEnvironmentVariable('PATH', $Path, 'User')
+PS C:\git> git clone https://github.com/clomie/nvmp
+PS C:\git> cd nvmp
+PS C:\git\nvmp> . .\install.ps1 
 ```
-
-And then, restart your powershell.
