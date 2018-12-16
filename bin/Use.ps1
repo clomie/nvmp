@@ -23,6 +23,8 @@ if (Test-Path $Dirs.Current) {
 
 &$ENV:COMSPEC /c mklink /j $Dirs.Current $Dirs.Node
 
-if (!$ENV:PATH.Contains($Dirs.Current)) {
-  $ENV:PATH = $Dirs.Current + ";" + $ENV:PATH
+$Path = [Environment]::GetEnvironmentVariable('Path', 'User')
+if (-Not $Path.Contains($Dirs.Current)) {
+  $NewPath = $Dirs.Current + ";" + $Path
+  [Environment]::SetEnvironmentVariable('Path', $NewPath, 'User')
 }
