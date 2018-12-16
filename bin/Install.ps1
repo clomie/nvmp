@@ -17,7 +17,7 @@ $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 . "$PSScriptRoot\..\lib\ParseVersionTable.ps1"
 
 function fget ($Url, $Dir, $FileName) {
-  if ($FileName -eq $null) {
+  if ($null -eq $FileName) {
     $FileName = $Url -Split "/" | Select-Object -Last 1
   }
   $Path = Join-Path $Dir $FileName
@@ -39,7 +39,7 @@ function fget ($Url, $Dir, $FileName) {
 $Arch = CheckArch $Arch
 $Dirs = ResolveDirs $Version $Arch
 
-$NodeVersionInfo = ParseVersionTable (DownloadString (NodeIndexTableUrl)) | ? { $_.version -eq $Version }
+$NodeVersionInfo = ParseVersionTable (DownloadString (NodeIndexTableUrl)) | Where-Object { $_.version -eq $Version }
 
 if ([string]::IsNullOrEmpty($NodeVersionInfo)) {
   throw "$Version is not available"
